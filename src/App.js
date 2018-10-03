@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-// import "./styleChatApp.css";
+import "./styleChatApp.css";
 import Comp1 from "./messageContainer.js";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.inputHandler = this.inputHandler.bind(this);
+    this.clearInputField = this.clearInputField.bind(this);
     this.eventHandler = this.eventHandler.bind(this);
     this.state = {
       inputArray: [],
@@ -15,33 +15,62 @@ class App extends Component {
     };
   }
 
-  inputHandler(inputValue) {
-    this.setState({ inputText: inputValue.target.value });
+  inputHandler(event) {
+    this.setState({ inputText: event.target.value });
+
+    if (event.keyCode == 13 && this.state.inputText !== "") {
+      this.eventHandler();
+      this.clearInputField();
+    }
   }
 
-  eventHandler() {
-    this.setState({
-      inputArray: [...this.state.inputArray, this.state.inputText]
-    });
-    console.log(this.state.inputText);
+  async eventHandler() {
+    if (this.state.inputText !== "") {
+      await this.setState({
+        inputArray: [...this.state.inputArray, this.state.inputText]
+      });
+      let grabbableId = this.state.inputArray.length - 1;
+      let grabbedElement = document.getElementById(grabbableId);
+
+      grabbedElement.scrollIntoView({
+        behavior: "instant",
+        block: "end",
+        inline: "nearest"
+      });
+      this.clearInputField();
+    }
+  }
+
+  clearInputField() {
+    let inputBox = this.refs.inputBox;
+    inputBox.value = "";
   }
 
   render() {
-    const showMessage = this.state.inputArray.map(item => {
-      return <Comp1 inputValueText={item} />;
+    const showMessage = this.state.inputArray.map((item, idx) => {
+      return <Comp1 inputValueText={item} idProps={idx} key={idx} />;
     });
     return (
-      <div className="App">
+      <div className="chatbox-head-container">
         <div className="chat-container">
-          {showMessage}
-          <input
-            className="style-box"
-            type="text"
-            onChange={this.inputHandler}
-          />
-          <button className="style-box" onClick={this.eventHandler}>
-            Send
-          </button>
+          <div className="menu-content">Public Chat</div>
+          <div className="message-container">{showMessage}</div>
+          <div className="input-area">
+            <div className="input-box">
+              <input
+                ref="inputBox"
+                className="input-text-area"
+                type="text"
+                onKeyUp={this.inputHandler}
+                placeholder="Type your message here ..."
+              />
+            </div>
+            <div className="send-button-box">
+              <button className="style-button" onClick={this.eventHandler}>
+                Send
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
