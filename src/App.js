@@ -63,7 +63,7 @@ class App extends Component {
       <div className="chatbox-head-container">
         <div className="chat-container">
           <div className="menu-content">
-            <h4>BaalChat</h4>
+            <h4>Public Chat</h4>
           </div>
           <div className="message-container">{showMessage}</div>
           <div className="input-area">
