@@ -16,10 +16,14 @@
 .menu-content {
   text-align: center;
   color: white;
-  font-size: 20px;
+  font-size: 2em;
   font-weight: bold;
   margin: 0px;
   background-color: #454444;
+}
+.menu-content h4,
+h6 {
+  margin: auto;
 }
 
 .message-container {
@@ -31,21 +35,48 @@
 }
 .message-content {
   display: flex;
-  width: 80%;
   margin-left: 25px;
   flex-direction: row;
   padding: 10px;
   justify-content: flex-start;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
+}
+.message-content .message-text-holder {
+  max-width: 70%;
+  word-wrap: break-word;
 }
 
-.message-text {
+.message-text-holder {
   background-color: #576574;
   border-radius: 10px;
   line-height: 35px;
   margin: 0px;
-  font-size: 20px;
-  padding: 10px;
+  font-size: 2em;
+  padding: 10px 25px;
+  color: white;
+  font-family: Monospace;
+}
+.message-text{
+  margin: auto;
+}
+
+.message-time-holder{
+  display: flex;
+  flex-direction: row;
+  margin: auto 10px;
+  justify-content: flex-start;
+
+}
+
+.message-time{
+  color: #1c1f1f;
+  background-color: #1c1f1f;
+}
+.message-content:hover .message-time{
+  background-color: #576574;
+  border-radius: 15px;
+  line-height: 15px;
+  padding: 5px 15px;
   color: white;
   font-family: Monospace;
 }
@@ -58,17 +89,18 @@
 .input-box {
   display: flex;
   margin-left: 25px;
-  padding: 10px;
+  padding: 2px;
   flex: 4;
+  word-wrap: break-word;
 }
 
 .input-text-area {
   border: none;
-  font-size: 20px;
-  background-color: #1c1f1f;
+  font-size: 1em;
+  background-color: #363834;
   color: white;
   margin-left: 5px;
-  padding: 5px;
+  padding: 5px 25px;
   width: 100%;
   height: 35px;
 }
@@ -82,12 +114,12 @@
   font-weight: bold;
   cursor: pointer;
   border-radius: 10px;
-  background-color: #1da0cc;
+  background-color: #407F94;
   color: white;
   width: 100%;
-  height: 35px;
+  height: 46px;
 }
 
 .style-button:hover {
-  background-color: #4b7bec;
+  background-color: #6A97A6;
 }

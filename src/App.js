@@ -11,24 +11,33 @@ class App extends Component {
     this.eventHandler = this.eventHandler.bind(this);
     this.state = {
       inputArray: [],
-      inputText: ""
+      inputText: "",
+      currenTime: ""
     };
   }
 
   inputHandler(event) {
     this.setState({ inputText: event.target.value });
+    this.setState({ currenTime: new Date().toLocaleTimeString() });
 
     if (event.keyCode == 13 && this.state.inputText !== "") {
+      // this.setState({ inputText: event.target.value });
       this.eventHandler();
       this.clearInputField();
     }
   }
 
   async eventHandler() {
+    let person = {
+      text: this.state.inputText,
+      dateTime: this.state.currenTime
+    };
     if (this.state.inputText !== "") {
       await this.setState({
-        inputArray: [...this.state.inputArray, this.state.inputText]
+        inputArray: [...this.state.inputArray, person]
       });
+      console.log("main comp", person);
+      this.clearInputField();
       let grabbableId = this.state.inputArray.length - 1;
       let grabbedElement = document.getElementById(grabbableId);
 
@@ -37,13 +46,13 @@ class App extends Component {
         block: "end",
         inline: "nearest"
       });
-      this.clearInputField();
     }
   }
 
   clearInputField() {
     let inputBox = this.refs.inputBox;
     inputBox.value = "";
+    this.setState({ inputText: "" });
   }
 
   render() {
@@ -53,7 +62,9 @@ class App extends Component {
     return (
       <div className="chatbox-head-container">
         <div className="chat-container">
-          <div className="menu-content">Public Chat</div>
+          <div className="menu-content">
+            <h4>BaalChat</h4>
+          </div>
           <div className="message-container">{showMessage}</div>
           <div className="input-area">
             <div className="input-box">
