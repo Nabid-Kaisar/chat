@@ -7,9 +7,7 @@ const cors = require("cors");
 
 const session = require("express-session");
 
-
 // using middlewares
-
 
 app.use(require("body-parser").json());
 
@@ -31,10 +29,84 @@ const db = mysql.createConnection({
   database: "chatdata"
 });
 
-app.get('/home', (req, res) =>{
+//Register
+app.post("/postRegisterInfo", (req, res) => {
+  let post = {
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password
+  };
+  let sql = "INSERT INTO userdata SET ?";
+  let query = db.query(sql, post, (err, result) => {
+    if (err) {
+      res.json({ success: false, message: "Could not create User" });
+    }
+    console.log(result);
+    res.json({ success: true, message: "New User added" });
+  });
+});
+
+//Login and session start
+app.post("/postLoginInfo", (req, res) => {
+  let uname = req.body.username;
+  let pass = req.body.password;
+  let sql = `SELECT username,password,email FROM userdata WHERE username = "${uname}"`;
+  let query = db.query(sql, (err, results) => {
+    if (err) throw err;
+    const fetchedUserName = results[0];
+    console.log(results[0]);
+    if (results[0].password === pass) {
+      //req.session.success = true;
+
+      req.session.user = {
+        username: fetchedUserName
+      };
+      //  res.send(req.session.user);
+      res.send({
+        success: true
+      });
+      // res.redirect('/');
+    } else {
+      res.send("wrong usrename or password");
+    }
+
+    // res.send({
+    //   success:true,
+    //   data : results
+    // });
+  });
+});
+
+//test session
+
+app.get("/secret", (req, res, next) => {
+  console.log(req.session.user);
+  if (req.session.user) {
+    //res.send("You are logged IN")
+    res.send({
+      name: req.session.user.username
+    });
+  } else {
+    res.send("Please login to continue");
+  }
+});
+
+//Logout
+app.get("/logout", (req, res) => {
+  req.session.destroy(function(err) {
+    if (err) throw err;
+    res.send(
+      "You have been logged out of your session. Please login to contiune"
+    );
+  });
+});
+
+
+
+app.get("/home", (req, res) => {
   //res.send("this is home page");
-  res.redirect('http://localhost:3000');
-})
+  res.redirect("http://localhost:3000");
+});
 
 app.listen("5000", () => {
   console.log("Server started on port 5000");
