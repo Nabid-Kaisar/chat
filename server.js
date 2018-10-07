@@ -80,7 +80,7 @@ app.post("/postLoginInfo", (req, res) => {
 //add Chat data if session active
 app.post('/sendmsg', (req,res)=>{
 if (req.session.user) {
-  console.log( req.session.user);
+  
 
   let uname =  req.session.user.username.username;
   let msg = req.body.chatmsg;

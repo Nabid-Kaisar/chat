@@ -29,7 +29,6 @@ class PublicChat extends Component {
 
   async eventHandler() {
 
-    
 
 
     let person = {
@@ -37,6 +36,31 @@ class PublicChat extends Component {
       dateTime: this.state.currenTime
     };
     if (this.state.inputText !== "") {
+
+      //sending network request to save my chat data to db
+      fetch("http://localhost:5000/sendmsg", {
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include',
+        body: JSON.stringify({
+          chatmsg: this.state.inputText
+
+        }),
+        method: "POST"
+      })
+        .then(response => {
+          //console.log("json response: ", response);
+          return response.json();
+        })
+        .then(resJson => {
+          console.log("json response: ", resJson);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+        //end of req
+
+
       await this.setState({
         inputArray: [...this.state.inputArray, person]
       });
