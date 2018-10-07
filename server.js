@@ -41,7 +41,7 @@ app.post("/postRegisterInfo", (req, res) => {
     if (err) {
       res.json({ success: false, message: "Could not create User" });
     }
-    console.log(result);
+    //console.log(result);
     res.json({ success: true, message: "New User added" });
   });
 });
@@ -54,7 +54,7 @@ app.post("/postLoginInfo", (req, res) => {
   let query = db.query(sql, (err, results) => {
     if (err) throw err;
     const fetchedUserName = results[0];
-    console.log(results[0]);
+    //console.log(results[0]);
     if (results[0].password === pass) {
       //req.session.success = true;
 
@@ -76,6 +76,35 @@ app.post("/postLoginInfo", (req, res) => {
     // });
   });
 });
+
+//add Chat data if session active
+app.post('/sendmsg', (req,res)=>{
+if (req.session.user) {
+  console.log( req.session.user);
+
+  let uname =  req.session.user.username.username;
+  let msg = req.body.chatmsg;
+  let t = new Date().toLocaleTimeString();
+
+  //let post = {  body: req.body.body, title: req.body.title};
+  let sql = `INSERT INTO globalchat (id, username, chatmsg, time) VALUES (NULL, '${uname}', '${msg}', '${t}')`;
+  let query = db.query(sql, (err, result) => {
+    if (err) {
+      res.json({ success: false, message: "Could not create post" });
+    }
+    //console.log(result);
+    res.json({ success: true, message: "New post added" });
+  });
+
+}else{
+  res.send({
+    success:false
+  })
+}
+});
+
+
+
 
 //test session
 
