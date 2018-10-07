@@ -11,6 +11,7 @@ class PublicChat extends Component {
     this.eventHandler = this.eventHandler.bind(this);
     this.checkStatus = this.checkStatus.bind(this);
 
+
     this.state = {
       inputArray: [],
       inputText: "",
@@ -31,71 +32,79 @@ class PublicChat extends Component {
     }
   }
 
+
+
   async eventHandler() {
-    let person = {
-      text: this.state.inputText,
-      dateTime: this.state.currenTime
-    };
 
-    if (this.state.inputText !== "") {
-      //sending network request to save my chat data to db
-      fetch("http://localhost:5000/sendmsg", {
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          chatmsg: this.state.inputText
-        }),
-        method: "POST"
-      })
-        .then(response => {
-          //console.log("json response: ", response);
-          return response.json();
-        })
-        .then(resJson => {
-          console.log("json response: ", resJson);
-          if (resJson.success == false) {
-            //not logged IN
-            this.setState({
-              loginMsg:
-                "You are not logged IN. Please login to participate in chat! Thank you"
-            });
-          }
-          // else{
-          //   this.setState({loginStatus: true})
-          // }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      let person = {
+        text: this.state.inputText,
+        dateTime: this.state.currenTime
+      };
 
-      //end of req
-      console.log("Your logged in status:"+this.state.loginStatus);
+      if (this.state.inputText !== "") {
+        //sending network request to save my chat data to db
+        fetch("http://localhost:5000/sendmsg", {
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            chatmsg: this.state.inputText
+          }),
+          method: "POST"
+        })
+          .then(response => {
+            //console.log("json response: ", response);
+            return response.json();
+          })
+          .then(resJson => {
+            console.log("json response: ", resJson);
+            if (resJson.success == false) {
+              //not logged IN
+              this.setState({
+                loginMsg:
+                  "You are not logged IN. Please login to participate in chat! Thank you"
+              });
+            }
+            // else{
+            //   this.setState({loginStatus: true})
+            // }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+
+        //end of req
+        console.log("Your logged in status:" + this.state.loginStatus);
 
         await this.setState({
           inputArray: [...this.state.inputArray, person]
         });
-        //console.log("main comp", person);
-        this.clearInputField();
-        let grabbableId = this.state.inputArray.length - 1;
-        let grabbedElement = document.getElementById(grabbableId);
+      }
+      //console.log("main comp", person);
+      this.clearInputField();
+      let grabbableId = this.state.inputArray.length - 1;
+      let grabbedElement = document.getElementById(grabbableId);
 
-        grabbedElement.scrollIntoView({
-          behavior: "instant",
-          block: "end",
-          inline: "nearest"
-        });
+      grabbedElement.scrollIntoView({
+        behavior: "instant",
+        block: "end",
+        inline: "nearest"
+      });
 
-    }
+    // else{
+    //   this.setState({
+    //     loginMsg:
+    //       "You are not logged IN. Please login to participate in chat! Thank you"
+    //   });
+    // }
   }
-
   clearInputField() {
     let inputBox = this.refs.inputBox;
     inputBox.value = "";
     this.setState({ inputText: "" });
   }
 
-//check if logged in with session or not
-  checkStatus(){
+  //check if logged in with session or not
+  checkStatus() {
     fetch("http://localhost:5000/status")
       .then(response => {
         return response.json();
@@ -113,12 +122,14 @@ class PublicChat extends Component {
       });
   }
 
+
+
   render() {
     const showMessage = this.state.inputArray.map((item, idx) => {
       return <Comp1 inputValueText={item} idProps={idx} key={idx} />;
     });
 
- this.checkStatus();
+    this.checkStatus();
 
     return (
       <div>
