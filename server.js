@@ -78,33 +78,27 @@ app.post("/postLoginInfo", (req, res) => {
 });
 
 //add Chat data if session active
-app.post('/sendmsg', (req,res)=>{
-if (req.session.user) {
-  
+app.post("/sendmsg", (req, res) => {
+  if (req.session.user) {
+    let uname = req.session.user.username.username;
+    let msg = req.body.chatmsg;
+    let t = new Date().toLocaleTimeString();
 
-  let uname =  req.session.user.username.username;
-  let msg = req.body.chatmsg;
-  let t = new Date().toLocaleTimeString();
-
-  //let post = {  body: req.body.body, title: req.body.title};
-  let sql = `INSERT INTO globalchat (id, username, chatmsg, time) VALUES (NULL, '${uname}', '${msg}', '${t}')`;
-  let query = db.query(sql, (err, result) => {
-    if (err) {
-      res.json({ success: false, message: "Could not create post" });
-    }
-    //console.log(result);
-    res.json({ success: true, message: "New post added" });
-  });
-
-}else{
-  res.send({
-    success:false
-  })
-}
+    //let post = {  body: req.body.body, title: req.body.title};
+    let sql = `INSERT INTO globalchat (id, username, chatmsg, time) VALUES (NULL, '${uname}', '${msg}', '${t}')`;
+    let query = db.query(sql, (err, result) => {
+      if (err) {
+        res.json({ success: false, message: "Could not create post" });
+      }
+      //console.log(result);
+      res.json({ success: true, message: "New post added" });
+    });
+  } else {
+    res.send({
+      success: false
+    });
+  }
 });
-
-
-
 
 //test session
 
@@ -130,7 +124,18 @@ app.get("/logout", (req, res) => {
   });
 });
 
-
+//check Login Status
+app.get("/status", (req, res) => {
+  if (req.session.user) {
+    res.send({
+      login: true
+    });
+  } else {
+    res.send({
+      login: false
+    });
+  }
+});
 
 app.get("/home", (req, res) => {
   //res.send("this is home page");

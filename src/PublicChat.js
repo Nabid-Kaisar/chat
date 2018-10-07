@@ -9,6 +9,8 @@ class PublicChat extends Component {
     this.inputHandler = this.inputHandler.bind(this);
     this.clearInputField = this.clearInputField.bind(this);
     this.eventHandler = this.eventHandler.bind(this);
+    this.checkStatus = this.checkStatus.bind(this);
+
     this.state = {
       inputArray: [],
       inputText: "",
@@ -57,9 +59,10 @@ class PublicChat extends Component {
               loginMsg:
                 "You are not logged IN. Please login to participate in chat! Thank you"
             });
-          }else{
-            this.setState({loginStatus: true})
           }
+          // else{
+          //   this.setState({loginStatus: true})
+          // }
         })
         .catch(err => {
           console.log(err);
@@ -91,10 +94,32 @@ class PublicChat extends Component {
     this.setState({ inputText: "" });
   }
 
+//check if logged in with session or not
+  checkStatus(){
+    fetch("http://localhost:5000/status")
+      .then(response => {
+        return response.json();
+      })
+      .then(resJson => {
+        // console.log("json response: ", resJson);
+        // console.log(resJson.success);
+        //console.log(resJson.data);
+        if (resJson.login === true) {
+          this.setState({ loginStatus: true });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   render() {
     const showMessage = this.state.inputArray.map((item, idx) => {
       return <Comp1 inputValueText={item} idProps={idx} key={idx} />;
     });
+
+ this.checkStatus();
+
     return (
       <div>
         <div className="chatbox-head-container">
