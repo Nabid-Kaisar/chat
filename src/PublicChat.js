@@ -12,7 +12,9 @@ class PublicChat extends Component {
     this.state = {
       inputArray: [],
       inputText: "",
-      currenTime: ""
+      currenTime: "",
+      loginMsg: "",
+      loginStatus: false
     };
   }
 
@@ -28,22 +30,18 @@ class PublicChat extends Component {
   }
 
   async eventHandler() {
-
-
-
     let person = {
       text: this.state.inputText,
       dateTime: this.state.currenTime
     };
-    if (this.state.inputText !== "") {
 
+    if (this.state.inputText !== "") {
       //sending network request to save my chat data to db
       fetch("http://localhost:5000/sendmsg", {
         headers: { "Content-Type": "application/json" },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify({
           chatmsg: this.state.inputText
-
         }),
         method: "POST"
       })
@@ -53,32 +51,38 @@ class PublicChat extends Component {
         })
         .then(resJson => {
           console.log("json response: ", resJson);
+          if (resJson.success == false) {
+            //not logged IN
+            this.setState({
+              loginMsg:
+                "You are not logged IN. Please login to participate in chat! Thank you"
+            });
+          }else{
+            this.setState({loginStatus: true})
+          }
         })
         .catch(err => {
           console.log(err);
         });
 
-        //end of req
+      //end of req
+      console.log("Your logged in status:"+this.state.loginStatus);
 
+        await this.setState({
+          inputArray: [...this.state.inputArray, person]
+        });
+        //console.log("main comp", person);
+        this.clearInputField();
+        let grabbableId = this.state.inputArray.length - 1;
+        let grabbedElement = document.getElementById(grabbableId);
 
-      await this.setState({
-        inputArray: [...this.state.inputArray, person]
-      });
-      console.log("main comp", person);
-      this.clearInputField();
-      let grabbableId = this.state.inputArray.length - 1;
-      let grabbedElement = document.getElementById(grabbableId);
+        grabbedElement.scrollIntoView({
+          behavior: "instant",
+          block: "end",
+          inline: "nearest"
+        });
 
-      grabbedElement.scrollIntoView({
-        behavior: "instant",
-        block: "end",
-        inline: "nearest"
-      });
     }
-
-
-
-
   }
 
   clearInputField() {
@@ -92,29 +96,32 @@ class PublicChat extends Component {
       return <Comp1 inputValueText={item} idProps={idx} key={idx} />;
     });
     return (
-      <div className="chatbox-head-container">
-        <div className="chat-container">
-          <div className="menu-content">
-            <h4>Public Chat</h4>
-          </div>
-          <div className="message-container">{showMessage}</div>
-          <div className="input-area">
-            <div className="input-box">
-              <input
-                ref="inputBox"
-                className="input-text-area"
-                type="text"
-                onKeyUp={this.inputHandler}
-                placeholder="Type your message here ..."
-              />
+      <div>
+        <div className="chatbox-head-container">
+          <div className="chat-container">
+            <div className="menu-content">
+              <h4>Public Chat</h4>
             </div>
-            <div className="send-button-box">
-              <button className="style-button" onClick={this.eventHandler}>
-                Send
-              </button>
+            <div className="message-container">{showMessage}</div>
+            <div className="input-area">
+              <div className="input-box">
+                <input
+                  ref="inputBox"
+                  className="input-text-area"
+                  type="text"
+                  onKeyUp={this.inputHandler}
+                  placeholder="Type your message here ..."
+                />
+              </div>
+              <div className="send-button-box">
+                <button className="style-button" onClick={this.eventHandler}>
+                  Send
+                </button>
+              </div>
             </div>
           </div>
         </div>
+        <div>{this.state.loginMsg}</div>
       </div>
     );
   }

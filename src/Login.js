@@ -36,11 +36,14 @@ class Login extends Component {
       method: "POST"
     })
       .then(response => {
-        console.log("json response: ", response);
+        //console.log("json response: ", response);
         return response.text();
       })
       .then(resJson => {
         console.log("json response: ", resJson);
+        if(resJson.success == true){
+          
+        }
       })
       .catch(err => {
         console.log(err);
