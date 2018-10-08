@@ -18,7 +18,8 @@ class PublicChat extends Component {
       inputText: "",
       currenTime: "",
       loginMsg: "",
-      loginStatus: false
+      loginStatus: false,
+      currentUserName: ""
 
     };
   }
@@ -39,7 +40,7 @@ class PublicChat extends Component {
   async eventHandler() {
 
       let person = {
-        text: this.state.inputText,
+        text: `${this.state.currentUserName}: ${this.state.inputText}`,
         dateTime: this.state.currenTime
       };
 
@@ -102,10 +103,10 @@ class PublicChat extends Component {
   }
 
   //didMount Data fetching helper method
-  async recentChat(msg, time) {
+  async recentChat(username, msg, time) {
 
       let person = {
-        text: msg,
+        text: `${username}: ${msg}`,
         dateTime: time
       };
 
@@ -187,7 +188,7 @@ class PublicChat extends Component {
           console.log(resJson);
           // this.setState({testVar:resJson.data[0].chatmsg})
           for(var i =9; i >=0; i--){
-              this.recentChat(resJson.data[i].chatmsg, resJson.data[i].time)
+              this.recentChat(resJson.data[i].username, resJson.data[i].chatmsg, resJson.data[i].time)
           }
         } else {
           console.log("error");
@@ -196,10 +197,31 @@ class PublicChat extends Component {
       .catch(err => {
         console.log(err);
       });
+
+      //fetch to get the username of current session username
+      fetch("http://localhost:5000/secret", {credentials: 'include'})
+        .then(response => {
+
+          return response.json();
+        })
+        .then(resJson => {
+          console.log("json response: ", resJson);
+          console.log(resJson.success);
+          //console.log(resJson.data);
+          if (resJson.success === true) {
+            console.log(resJson.name.username)
+            this.setState({ currentUserName: resJson.name.username });
+          } else {
+            console.log("error");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
   }
 
   render() {
-    console.log(this.state.inputArray)
+  //  console.log(this.state.inputArray)
     const showMessage = this.state.inputArray.map((item, idx) => {
       return <Comp1 inputValueText={item} idProps={idx} key={idx} />;
     });

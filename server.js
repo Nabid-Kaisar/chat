@@ -103,14 +103,15 @@ app.post("/sendmsg", (req, res) => {
 //test session
 
 app.get("/secret", (req, res, next) => {
-  console.log(req.session.user);
+  
   if (req.session.user) {
     //res.send("You are logged IN")
     res.send({
+      success:true,
       name: req.session.user.username
     });
   } else {
-    res.send("Please login to continue");
+    res.send({success: false, name: "please login to continue"});
   }
 });
 
