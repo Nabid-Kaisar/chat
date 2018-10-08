@@ -135,7 +135,7 @@ class PublicChat extends Component {
 
   //check if logged in with session or not
   checkStatus() {
-    fetch("http://localhost:5000/status")
+    fetch("http://localhost:5000/status",{include:'credentials'})
       .then(response => {
         return response.json();
       })
