@@ -10,6 +10,7 @@ class PublicChat extends Component {
     this.clearInputField = this.clearInputField.bind(this);
     this.eventHandler = this.eventHandler.bind(this);
     this.checkStatus = this.checkStatus.bind(this);
+    this.recentChat = this.recentChat.bind(this);
 
 
     this.state = {
@@ -18,6 +19,7 @@ class PublicChat extends Component {
       currenTime: "",
       loginMsg: "",
       loginStatus: false
+
     };
   }
 
@@ -63,6 +65,7 @@ class PublicChat extends Component {
                 loginMsg:
                   "You are not logged IN. Please login to participate in chat! Thank you"
               });
+              this.setState({loginStatus: false})
             }
             // else{
             //   this.setState({loginStatus: true})
@@ -72,7 +75,7 @@ class PublicChat extends Component {
             console.log(err);
           });
 
-        //end of req
+        //end of req, ** this is not working **
         console.log("Your logged in status:" + this.state.loginStatus);
 
         await this.setState({
@@ -97,6 +100,32 @@ class PublicChat extends Component {
     //   });
     // }
   }
+
+  //didMount Data fetching helper method
+  async recentChat(msg, time) {
+
+      let person = {
+        text: msg,
+        dateTime: time
+      };
+
+        await this.setState({
+          inputArray: [...this.state.inputArray, person]
+        });
+
+      //console.log("main comp", person);
+      this.clearInputField();
+      let grabbableId = this.state.inputArray.length - 1;
+      let grabbedElement = document.getElementById(grabbableId);
+
+      grabbedElement.scrollIntoView({
+        behavior: "instant",
+        block: "end",
+        inline: "nearest"
+      });
+
+  }
+
   clearInputField() {
     let inputBox = this.refs.inputBox;
     inputBox.value = "";
@@ -120,11 +149,57 @@ class PublicChat extends Component {
       .catch(err => {
         console.log(err);
       });
+
   }
 
+  // componentDidMount() {
+  //   fetch("http://localhost:5000/status")
+  //     .then(response => {
+  //       //console.log(response);
+  //       return response.json();
+  //     })
+  //     .then(resJson => {
+  //       // console.log("json response: ", resJson);
+  //       // console.log(resJson.success);
+  //       //console.log(resJson);
+  //       if (resJson.login === true) {
+  //         this.setState({ loginStatus: true });
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }
 
+  //filling up array from database
+  componentDidMount(){
+    fetch("http://localhost:5000/recentchat")
+      .then(response => {
+
+        return response.json();
+      })
+      .then(resJson => {
+        // console.log("json response: ", resJson);
+        // console.log(resJson.success);
+        //console.log(resJson.data);
+        if (resJson.success === true) {
+
+          console.log(resJson);
+          // this.setState({testVar:resJson.data[0].chatmsg})
+          for(var i =9; i >=0; i--){
+              this.recentChat(resJson.data[i].chatmsg, resJson.data[i].time)
+          }
+        } else {
+          console.log("error");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   render() {
+    console.log(this.state.inputArray)
     const showMessage = this.state.inputArray.map((item, idx) => {
       return <Comp1 inputValueText={item} idProps={idx} key={idx} />;
     });
@@ -158,6 +233,7 @@ class PublicChat extends Component {
           </div>
         </div>
         <div>{this.state.loginMsg}</div>
+
       </div>
     );
   }

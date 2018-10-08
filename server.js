@@ -126,6 +126,7 @@ app.get("/logout", (req, res) => {
 
 //check Login Status
 app.get("/status", (req, res) => {
+    //console.log(req.session.user)
   if (req.session.user) {
     res.send({
       login: true
@@ -135,6 +136,23 @@ app.get("/status", (req, res) => {
       login: false
     });
   }
+});
+
+
+//getting recent top 50 chatmsg with timeout
+app.get("/recentchat", (req, res) =>{
+    let sql = `SELECT * FROM globalchat ORDER BY id DESC LIMIT 10`;
+    let query = db.query(sql, (err, results) =>{
+      if(err) throw err;
+
+      //console.log(results);
+
+      res.send({
+        success:true,
+        data : results
+      });
+
+    })
 });
 
 app.get("/home", (req, res) => {
