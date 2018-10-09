@@ -4,6 +4,7 @@ const express = require("express");
 const mysql = require("mysql");
 const app = express();
 const cors = require("cors");
+var socket = require('socket.io');
 
 const session = require("express-session");
 
@@ -90,8 +91,9 @@ app.post("/sendmsg", (req, res) => {
       if (err) {
         res.json({ success: false, message: "Could not create post" });
       }
+      else{  res.json({ success: true, message: "New post added" });}
       //console.log(result);
-      res.json({ success: true, message: "New post added" });
+
     });
   } else {
     res.send({
@@ -103,7 +105,7 @@ app.post("/sendmsg", (req, res) => {
 //test session
 
 app.get("/secret", (req, res, next) => {
-  
+
   if (req.session.user) {
     //res.send("You are logged IN")
     res.send({
@@ -161,6 +163,17 @@ app.get("/home", (req, res) => {
   res.redirect("http://localhost:3000");
 });
 
-app.listen("5000", () => {
+server = app.listen("5000", () => {
   console.log("Server started on port 5000");
+});
+
+//using socekts
+io = socket(server);
+
+io.on('connection', (socket) => {
+    console.log(socket.id);
+
+    socket.on('SEND_MESSAGE', function(data){
+        io.emit('RECEIVE_MESSAGE', data);
+    })
 });
