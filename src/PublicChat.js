@@ -9,7 +9,6 @@ class PublicChat extends Component {
     super(props);
     this.inputHandler = this.inputHandler.bind(this);
     this.clearInputField = this.clearInputField.bind(this);
-    this.eventHandler = this.eventHandler.bind(this);
     this.checkStatus = this.checkStatus.bind(this);
     this.recentChat = this.recentChat.bind(this);
     this.addMsg = this.addMsg.bind(this);
@@ -44,7 +43,6 @@ class PublicChat extends Component {
       });
     }
 
-    
     let grabbableId = this.state.inputArray.length - 1;
     let grabbedElement = document.getElementById(grabbableId);
 
@@ -56,9 +54,6 @@ class PublicChat extends Component {
   };
 
   sendMsg = e => {
-    e.preventDefault();
-
-
     this.clearInputField();
 
     this.socket.emit("SEND_MESSAGE", {
@@ -110,74 +105,9 @@ class PublicChat extends Component {
 
     if (event.keyCode == 13 && this.state.inputText !== "") {
       // this.setState({ inputText: event.target.value });
-      this.eventHandler();
+      this.sendMsg();
       this.clearInputField();
     }
-  }
-
-  async eventHandler() {
-    let person = {
-      text: `${this.state.currentUserName}: ${this.state.inputText}`,
-      dateTime: this.state.currenTime
-    };
-
-    if (this.state.inputText !== "") {
-      //sending network request to save my chat data to db
-      fetch("http://localhost:5000/sendmsg", {
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          chatmsg: this.state.inputText
-        }),
-        method: "POST"
-      })
-        .then(response => {
-          //console.log("json response: ", response);
-          return response.json();
-        })
-        .then(resJson => {
-          console.log("json response: ", resJson);
-          if (resJson.success == false) {
-            //not logged IN
-            this.setState({
-              loginMsg:
-                "You are not logged IN. Please login to participate in chat! Thank you"
-            });
-            this.setState({ loginStatus: false });
-          }
-          // else{
-          //   this.setState({loginStatus: true})
-          // }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
-      //end of req, ** this is not working **
-      console.log("Your logged in status:" + this.state.loginStatus);
-      if (this.state.loginStatus === true) {
-        await this.setState({
-          inputArray: [...this.state.inputArray, person]
-        });
-      }
-    }
-    //console.log("main comp", person);
-    this.clearInputField();
-    let grabbableId = this.state.inputArray.length - 1;
-    let grabbedElement = document.getElementById(grabbableId);
-
-    grabbedElement.scrollIntoView({
-      behavior: "instant",
-      block: "end",
-      inline: "nearest"
-    });
-
-    // else{
-    //   this.setState({
-    //     loginMsg:
-    //       "You are not logged IN. Please login to participate in chat! Thank you"
-    //   });
-    // }
   }
 
   //didMount Data fetching helper method
@@ -191,16 +121,6 @@ class PublicChat extends Component {
       inputArray: [...this.state.inputArray, person]
     });
 
-    //console.log("main comp", person);
-    // this.clearInputField();
-    // let grabbableId = this.state.inputArray.length - 1;
-    // let grabbedElement = document.getElementById(grabbableId);
-    //
-    // grabbedElement.scrollIntoView({
-    //   behavior: "instant",
-    //   block: "end",
-    //   inline: "nearest"
-    // });
   }
 
   clearInputField() {
