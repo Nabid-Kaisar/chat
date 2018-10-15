@@ -1,0 +1,19 @@
+.titleBar{
+  background-color: #1B9AAA;
+  text-align: center;
+  border:20px;
+  color: #F5F1E3;
+  height: 150px;
+}
+.titleText{
+  margin:0;
+  font-family: 'Comfortaa', cursive;
+  line-height:100px;
+  font-weight: normal;
+  font-size: 35px;
+}
+.titleFoot{
+  font-family: 'Comfortaa', cursive;
+  font-size: 18px;
+  color: #F5F1E3;
+}

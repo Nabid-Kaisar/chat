@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import Register from "./Register";
 import Login from "./Login";
 import Logout from "./Logout";
-import PublicChat from "./PublicChat"
+import PublicChat from "./PublicChat";
+import TitleBar from "./TitleBar.js"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class App extends Component {
@@ -11,6 +12,7 @@ class App extends Component {
       <div>
         <Router>
           <div>
+            <TitleBar />
             <Link to="/register">Register</Link>
             <br />
             <Link to="/login">Login</Link>
