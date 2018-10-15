@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './RegisterStyle.css';
 
 class Register extends Component {
   constructor(props) {
@@ -49,25 +50,21 @@ class Register extends Component {
       .catch(err => {
         console.log(err);
       });
-
-      
   }
 
   render() {
     return (
       <div>
-        <h4>Username</h4>
+      <div className = "regContainer">
+        <h4 className="promptText">Username:</h4>
         <input type="text" name="username" onChange={this.handleUsername} />
-        <br />
-        <h4>Valid Email Address</h4>
-        <input type="text" name="email" onChange={this.handleEmail} />
 
-        <br />
-        <h4>Password</h4>
+        <h4 className="promptText">Valid Email Address:</h4>
+        <input type="text" name="email" onChange={this.handleEmail} />
+        <h4 className="promptText">Password:</h4>
         <input type="text" name="password" onChange={this.handlePassword} />
-        <br />
-        <br />
-        <button onClick={this.handleRegister}>Register</button>
+        <button onClick={this.handleRegister} className="regButton">Register</button>
+        </div>
       </div>
     );
   }
