@@ -30,7 +30,10 @@ class Logout extends Component {
 
   render(){
     return(
+      <div className ="logOutContainer">
+      <h4 className="propmtLogin"><span className= "dotRedlogOut"> </span> Click to Logout :</h4>
       <button onClick={this.handleLogout} className = "logoutButton">Logout</button>
+      </div>
     )
   }
 

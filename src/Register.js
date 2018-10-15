@@ -56,7 +56,7 @@ class Register extends Component {
     return (
       <div>
       <div className = "regContainer">
-        <h4 className="promptTextReg">Register to join our community :</h4>
+        <h4 className="promptTextReg"><span className= "dotGreen"> </span> Register to join our community :</h4>
         <h4 className="promptText">Username:</h4>
         <input type="text" name="username" onChange={this.handleUsername} />
 

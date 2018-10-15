@@ -57,7 +57,7 @@ class Login extends Component {
   render() {
     return (
       <div className="loginContainer">
-        <h4 className="propmtLogin">Login to Chat now :</h4>
+        <h4 className="propmtLogin"><span className= "dotGreen"> </span> Login to Chat now :</h4>
         <h4 className="promptText">Username:</h4>
         <input type="text" name="username" onChange={this.handleUsername} />
 

@@ -22,3 +22,10 @@ font-family: 'Comfortaa', cursive;
   background-color: #F8E2C0;
   font-weight: bold;
 }
+.dotGreen {
+    height: 12px;
+    width: 12px;
+    background-color: #2E972E;
+    border-radius: 50%;
+    display: inline-block;
+}

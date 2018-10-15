@@ -1,3 +1,10 @@
+.logOutContainer{
+color:#53353E;
+margin-left: 12px;
+font-size: 20px;
+font-family: 'Comfortaa', cursive;
+}
+
 .logoutButton{
   margin-top: 17px;
   margin-left: 12px;
@@ -6,4 +13,14 @@
   font-size: 17px;
   background-color: #F8E2C0;
   font-weight: bold;
+}
+.promptText{
+  margin-bottom: 7px;
+}
+.dotRedlogOut {
+  height: 12px;
+  width: 12px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
 }
