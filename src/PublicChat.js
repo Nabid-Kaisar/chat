@@ -46,11 +46,13 @@ class PublicChat extends Component {
     let grabbableId = this.state.inputArray.length - 1;
     let grabbedElement = document.getElementById(grabbableId);
 
-    grabbedElement.scrollIntoView({
-      behavior: "instant",
-      block: "end",
-      inline: "nearest"
-    });
+    if(grabbedElement != null){
+      grabbedElement.scrollIntoView({
+        behavior: "instant",
+        block: "end",
+        inline: "nearest"
+      });}
+
   };
 
   sendMsg = e => {
