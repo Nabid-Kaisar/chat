@@ -1,18 +1,20 @@
-.regContainer{
+.loginContainer{
 color:#53353E;
 margin-left: 12px;
 font-size: 20px;
 font-family: 'Comfortaa', cursive;
 }
 
-.promptText{
-  margin-bottom: 7px;
-}
-.promptTextReg{
+.propmtLogin{
   margin-bottom: 7px;
   text-decoration: underline;
 }
-.regButton{
+
+.promptText{
+  margin-bottom: 7px;
+}
+
+.loginButton{
   margin-top: 17px;
   color:#53353E;
   font-family: 'Comfortaa', cursive;

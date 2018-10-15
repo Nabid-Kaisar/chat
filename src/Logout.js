@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import './LogoutStyle.css'
 class Logout extends Component {
 
   constructor(props) {
@@ -30,7 +30,7 @@ class Logout extends Component {
 
   render(){
     return(
-      <button onClick={this.handleLogout}>Logout</button>
+      <button onClick={this.handleLogout} className = "logoutButton">Logout</button>
     )
   }
 

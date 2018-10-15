@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './LoginStyle.css'
 
 class Login extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class Login extends Component {
       .then(resJson => {
         console.log("json response: ", resJson);
         if(resJson.success == true){
-          
+
         }
       })
       .catch(err => {
@@ -55,15 +56,16 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
-        <h4>Username</h4>
+      <div className="loginContainer">
+        <h4 className="propmtLogin">Login to chat now:</h4>
+        <h4 className="promptText">Username:</h4>
         <input type="text" name="username" onChange={this.handleUsername} />
-        <br />
-        <h4>Password</h4>
-        <br />
+
+        <h4 className="promptText">Password:</h4>
+
         <input type="text" name="password" onChange={this.handlePassword} />
-        <br /> <br />
-        <button onClick={this.handleLogin}>Login</button>
+
+        <button onClick={this.handleLogin} className = "loginButton">Login</button>
       </div>
     );
   }
