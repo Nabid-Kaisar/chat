@@ -59,11 +59,11 @@ class Login extends Component {
       <div className="loginContainer">
         <h4 className="propmtLogin"><span className= "dotGreen"> </span> Login to Chat now :</h4>
         <h4 className="promptText">Username:</h4>
-        <input type="text" name="username" onChange={this.handleUsername} />
+        <input type="text" name="username" onChange={this.handleUsername} className="input-box-area"/>
 
         <h4 className="promptText">Password:</h4>
 
-        <input type="text" name="password" onChange={this.handlePassword} />
+        <input type="text" name="password" onChange={this.handlePassword} className="input-box-area"/>
 
         <button onClick={this.handleLogin} className = "loginButton">Login</button>
       </div>

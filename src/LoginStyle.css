@@ -22,6 +22,10 @@ font-family: 'Comfortaa', cursive;
   background-color: #F8E2C0;
   font-weight: bold;
 }
+.input-box-area{
+  background-color: #F8F8F8;
+}
+
 .dotGreen {
     height: 12px;
     width: 12px;

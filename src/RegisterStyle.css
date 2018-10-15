@@ -27,3 +27,6 @@ font-family: 'Comfortaa', cursive;
     border-radius: 50%;
     display: inline-block;
 }
+.input-box-area{
+  background-color: #F8F8F8;
+}

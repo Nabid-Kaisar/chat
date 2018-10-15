@@ -58,12 +58,12 @@ class Register extends Component {
       <div className = "regContainer">
         <h4 className="promptTextReg"><span className= "dotGreen"> </span> Register to join our community :</h4>
         <h4 className="promptText">Username:</h4>
-        <input type="text" name="username" onChange={this.handleUsername} />
+        <input type="text" name="username" onChange={this.handleUsername} className="input-box-area"/>
 
         <h4 className="promptText">Valid Email Address:</h4>
-        <input type="text" name="email" onChange={this.handleEmail} />
+        <input type="text" name="email" onChange={this.handleEmail} className="input-box-area"/>
         <h4 className="promptText">Password:</h4>
-        <input type="text" name="password" onChange={this.handlePassword} />
+        <input type="text" name="password" onChange={this.handlePassword} className="input-box-area"/>
         <button onClick={this.handleRegister} className="regButton">Register</button>
         </div>
       </div>
