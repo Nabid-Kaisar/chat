@@ -15,7 +15,7 @@ class App extends Component {
           <div>
             <TitleBar />
             <SideBar />
-            
+
           </div>
         </Router>
       </div>
