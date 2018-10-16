@@ -37,13 +37,29 @@ app.post("/postRegisterInfo", (req, res) => {
     email: req.body.email,
     password: req.body.password
   };
-  let sql = "INSERT INTO userdata SET ?";
-  let query = db.query(sql, post, (err, result) => {
-    if (err) {
-      res.json({ success: false, message: "Could not create User" });
+  let sql = `INSERT INTO userdata( username, email, password) VALUES ("${post.username}", "${post.email} ","${post.password}")`;
+  let sqlExist = `SELECT * FROM userdata WHERE username = "${post.username}"`;
+
+  //already existed user or not
+  let checkExist = db.query(sqlExist, (err,result) =>{
+    if(err){ //any server-db error
+      console.log(err);
+      res.json({success: false});
+    }else{
+
+      if(result.length >0){ //there is something with same username found
+        console.log("Username already Exist!")
+        res.json({success:false, message: "Already exist"})
+      }else{
+        let query = db.query(sql, (err) => {
+          if (err) {
+            res.json({ success: false, message: "Could not create User" });
+          }else{
+            res.json({ success: true, message: "New User added" });
+          }
+        });
+      }
     }
-    //console.log(result);
-    res.json({ success: true, message: "New User added" });
   });
 });
 
@@ -54,21 +70,21 @@ app.post("/postLoginInfo", (req, res) => {
   let sql = `SELECT username,password,email FROM userdata WHERE username = "${uname}"`;
   let query = db.query(sql, (err, results) => {
     if (err) throw err;
-    const fetchedUserName = results[0];
-    //console.log(results[0]);
+    var fetchedUserName = results[0];
+    console.log("below this line results")
+    console.log(results);
     if (results[0].password === pass) {
       //req.session.success = true;
-
       req.session.user = {
         username: fetchedUserName
       };
       //  res.send(req.session.user);
-      res.send({
+      res.json({
         success: true
       });
       // res.redirect('/');
     } else {
-      res.send({success: false});
+      res.json({success: false});
     }
   });
 });
@@ -168,8 +184,6 @@ server = app.listen("5000", () => {
 io = socket(server);
 
 io.on('connection', (socket) =>{
-  console.log(socket.id);
-
   socket.on('SEND_MESSAGE', (data)=>{
     io.emit('RECEIVE_MESSAGE', data)
   })

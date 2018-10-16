@@ -41,11 +41,10 @@ class Register extends Component {
       method: "POST"
     })
       .then(response => {
-        console.log("json response: ", response);
         return response.json();
       })
       .then(resJson => {
-        console.log("json response: ", resJson);
+        console.log(resJson);
       })
       .catch(err => {
         console.log(err);
@@ -63,7 +62,7 @@ class Register extends Component {
         <h4 className="promptText">Valid Email Address:</h4>
         <input type="text" name="email" onChange={this.handleEmail} className="input-box-area"/>
         <h4 className="promptText">Password:</h4>
-        <input type="password" name="password" onChange={this.handlePassword} className="input-box-area"/>
+        <input type="text" name="password" onChange={this.handlePassword} className="input-box-area"/>
         <button onClick={this.handleRegister} className="regButton">Register</button>
         </div>
       </div>

@@ -26,10 +26,10 @@ class Login extends Component {
     this.setState({ password: e.target.value });
   }
 
-  handleLogin() {
-    fetch("http://localhost:5000/postLoginInfo", {
+   handleLogin() {
+     fetch("http://localhost:5000/postLoginInfo", {
 
-      headers: { "Content-Type": "application/json", 'Accept':  'application/json','Cache': 'no-cache' },
+      headers: { "Content-Type": "application/json", 'Accept': 'application/json','Cache': 'no-cache' },
       credentials: 'include',
       body: JSON.stringify({
         username: this.state.username,
@@ -46,7 +46,7 @@ class Login extends Component {
          console.log(resJson.success);
         if(resJson.success === true){
           console.log("yes i am true")
-             this.setState({ifWrong: "Login Successful"})
+           this.setState({ifWrong: "Login Successful"})
         }if(resJson.success === false){
           console.log("no i am false")
            this.setState({ifWrong: "Wrong Username / Password"})
@@ -66,7 +66,7 @@ class Login extends Component {
 
         <h4 className="promptText">Password:</h4>
 
-        <input type="password" name="password" onChange={this.handlePassword} className="input-box-area"/>
+        <input type="text" name="password" onChange={this.handlePassword} className="input-box-area"/>
 
         <button onClick={this.handleLogin} className = "loginButton">Login</button>
         <h4>{this.state.ifWrong}</h4>
