@@ -6,7 +6,7 @@ font-family: 'Comfortaa', cursive;
 }
 
 .logoutButton{
-  margin-top: 17px;
+  margin-top: 7px;
   margin-left: 12px;
   color:#53353E;
   font-family: 'Comfortaa', cursive;
@@ -23,4 +23,8 @@ font-family: 'Comfortaa', cursive;
   background-color: red;
   border-radius: 50%;
   display: inline-block;
+}
+.logOutMsg{
+  font-family: 'Comfortaa', cursive;
+  font-size: 17px;
 }

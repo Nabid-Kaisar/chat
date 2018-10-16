@@ -63,7 +63,7 @@ class Register extends Component {
         <h4 className="promptText">Valid Email Address:</h4>
         <input type="text" name="email" onChange={this.handleEmail} className="input-box-area"/>
         <h4 className="promptText">Password:</h4>
-        <input type="text" name="password" onChange={this.handlePassword} className="input-box-area"/>
+        <input type="password" name="password" onChange={this.handlePassword} className="input-box-area"/>
         <button onClick={this.handleRegister} className="regButton">Register</button>
         </div>
       </div>
