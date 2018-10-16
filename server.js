@@ -70,20 +70,24 @@ app.post("/postLoginInfo", (req, res) => {
   let sql = `SELECT username,password,email FROM userdata WHERE username = "${uname}"`;
   let query = db.query(sql, (err, results) => {
     if (err) throw err;
-    var fetchedUserName = results[0];
     console.log("below this line results")
     console.log(results);
-    if (results[0].password === pass) {
-      //req.session.success = true;
-      req.session.user = {
-        username: fetchedUserName
-      };
-      //  res.send(req.session.user);
-      res.json({
-        success: true
-      });
-      // res.redirect('/');
-    } else {
+    if(results.length>0){
+      var fetchedUserName = results[0];
+      console.log("below this line results")
+      console.log(results);
+      if (results[0].password === pass) {
+        //req.session.success = true;
+        req.session.user = {
+          username: fetchedUserName
+        };
+        //  res.send(req.session.user);
+        res.send({
+          success: true
+        });
+        // res.redirect('/');
+      }
+    }else {
       res.json({success: false});
     }
   });

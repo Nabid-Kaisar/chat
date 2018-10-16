@@ -31,8 +31,8 @@ class PublicChat extends Component {
 
   //socket code
   async addMsg(data){
-    console.log("addMsg data");
-    console.log(data);
+    // console.log("addMsg data");
+    // console.log(data);
     let person = {
       text: data.text,
       dateTime: data.time
