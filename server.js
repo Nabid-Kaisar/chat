@@ -68,13 +68,8 @@ app.post("/postLoginInfo", (req, res) => {
       });
       // res.redirect('/');
     } else {
-      res.send("wrong usrename or password");
+      res.send({success: false});
     }
-
-    // res.send({
-    //   success:true,
-    //   data : results
-    // });
   });
 });
 

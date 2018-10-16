@@ -90,7 +90,7 @@ class PublicChat extends Component {
             //not logged IN
             this.setState({
               loginMsg:
-                "You are not logged IN. Please login to participate in chat! Thank you"
+                "You are not logged in. Please login to participate in chat! Thank you"
             });
             this.setState({ loginStatus: false });
           }
@@ -216,7 +216,7 @@ class PublicChat extends Component {
         <div className="chatbox-head-container">
           <div className="chat-container">
             <div className="menu-content">
-              <h4><span class="dotRed"></span> Public Chat</h4>
+              <h4><span className="dotRed"></span> Public Chat</h4>
             </div>
             <div className="message-container">{showMessage}</div>
             <div className="input-area">
@@ -237,7 +237,7 @@ class PublicChat extends Component {
             </div>
           </div>
         </div>
-        <div>{this.state.loginMsg}</div>
+        <div className="loginMsg">{this.state.loginMsg}</div>
       </div>
     );
   }

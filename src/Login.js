@@ -13,7 +13,8 @@ class Login extends Component {
 
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      ifWrong: ""
     };
   }
 
@@ -36,22 +37,24 @@ class Login extends Component {
       }),
       method: "POST"
     })
-      .then(response => {
+      .then( response => {
         //console.log("json response: ", response);
-        return response.text();
+        return response.json();
       })
-      .then(resJson => {
-        console.log("json response: ", resJson);
-        if(resJson.success == true){
-
+      .then( resJson => {
+         console.log(resJson);
+         console.log(resJson.success);
+        if(resJson.success === true){
+          console.log("yes i am true")
+             this.setState({ifWrong: "Login Successful"})
+        }if(resJson.success === false){
+          console.log("no i am false")
+           this.setState({ifWrong: "Wrong Username / Password"})
         }
       })
       .catch(err => {
         console.log(err);
       });
-
-
-
   }
 
   render() {
@@ -66,6 +69,7 @@ class Login extends Component {
         <input type="text" name="password" onChange={this.handlePassword} className="input-box-area"/>
 
         <button onClick={this.handleLogin} className = "loginButton">Login</button>
+        <h4>{this.state.ifWrong}</h4>
       </div>
     );
   }

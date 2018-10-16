@@ -147,3 +147,10 @@ h6 {
     border-radius: 50%;
     display: inline-block;
 }
+.loginMsg{
+  text-align: center;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 18px;
+  color: black;
+  margin-top: 20px;
+}
