@@ -152,7 +152,7 @@ class PublicChat extends Component {
 
   //filling up array from database
   componentDidMount() {
-    fetch("http://localhost:5000/recentchat")
+    fetch("http://localhost:5000/recentchat", { credentials: "include" })
       .then(response => {
         return response.json();
       })
