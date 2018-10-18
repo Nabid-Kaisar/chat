@@ -71,7 +71,7 @@ class Login extends Component {
 
         <h4 className="promptText">Password:</h4>
 
-        <input type="text" name="password" onKeyUp={this.inputPassHandler} className="input-box-area"/>
+        <input type="password" name="password" onKeyUp={this.inputPassHandler} className="input-box-area"/>
 
         <button onClick={this.handleLogin} className = "loginButton">Login</button>
         <h4>{this.state.ifWrong}</h4>

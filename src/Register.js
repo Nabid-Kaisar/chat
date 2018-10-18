@@ -7,9 +7,9 @@ class Register extends Component {
 
     this.handleRegister = this.handleRegister.bind(this);
 
-    this.handleUsername = this.handleUsername.bind(this);
-    this.handleEmail = this.handleEmail.bind(this);
-    this.handlePassword = this.handlePassword.bind(this);
+    this.inputNameHandler = this.inputNameHandler.bind(this);
+    this.inputEmailHandler = this.inputEmailHandler.bind(this);
+    this.inputPassHandler = this.inputPassHandler.bind(this);
 
     this.state = {
       username: "",
@@ -19,16 +19,23 @@ class Register extends Component {
     };
   }
 
-  handleUsername(e) {
-    this.setState({ username: e.target.value });
+  inputNameHandler(e){
+      this.setState({ username: e.target.value });
+      if(e.keyCode == 13){
+        this.handleRegister();
+      }
   }
-
-  handleEmail(e) {
-    this.setState({ email: e.target.value });
+  inputEmailHandler(e){
+      this.setState({ email: e.target.value });
+      if(e.keyCode == 13){
+        this.handleRegister();
+      }
   }
-
-  handlePassword(e) {
-    this.setState({ password: e.target.value });
+  inputPassHandler(e){
+      this.setState({ password: e.target.value });
+      if(e.keyCode == 13){
+        this.handleRegister();
+      }
   }
 
   handleRegister() {
@@ -93,7 +100,7 @@ class Register extends Component {
           <input
             type="text"
             name="username"
-            onChange={this.handleUsername}
+            onKeyUp={this.inputNameHandler}
             className="input-box-area"
           />
 
@@ -101,14 +108,14 @@ class Register extends Component {
           <input
             type="text"
             name="email"
-            onChange={this.handleEmail}
+            onKeyUp={this.inputEmailHandler}
             className="input-box-area"
           />
           <h4 className="promptText">Password:</h4>
           <input
             type="password"
             name="password"
-            onChange={this.handlePassword}
+            onKeyUp={this.inputPassHandler}
             className="input-box-area"
           />
           <button onClick={this.handleRegister} className="regButton">
