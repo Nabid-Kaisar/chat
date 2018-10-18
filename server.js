@@ -86,6 +86,10 @@ app.post("/postLoginInfo", (req, res) => {
           success: true
         });
         // res.redirect('/');
+      }else{
+        res.send({
+          success: false
+        })
       }
     }else {
       res.json({success: false});
