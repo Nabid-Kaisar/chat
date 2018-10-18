@@ -86,7 +86,7 @@ class PublicChat extends Component {
         })
         .then(resJson => {
           console.log("json response: ", resJson);
-          if (resJson.success == false) {
+          if (resJson.success === false) {
             //not logged IN
             this.setState({
               loginMsg:
@@ -105,7 +105,7 @@ class PublicChat extends Component {
     this.setState({ inputText: event.target.value });
     this.setState({ currenTime: new Date().toLocaleTimeString() });
 
-    if (event.keyCode == 13 && this.state.inputText !== "") {
+    if (event.keyCode === 13 && this.state.inputText !== "") {
       // this.setState({ inputText: event.target.value });
       this.sendMsg();
       this.clearInputField();

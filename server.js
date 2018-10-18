@@ -44,18 +44,18 @@ app.post("/postRegisterInfo", (req, res) => {
   let checkExist = db.query(sqlExist, (err,result) =>{
     if(err){ //any server-db error
       console.log(err);
-      res.json({success: false});
+      res.json({success: "swr"});//sending swr means something went wrong
     }else{
 
       if(result.length >0){ //there is something with same username found
         console.log("Username already Exist!")
-        res.json({success:false, message: "Already exist"})
+        res.json({success:"ae", message: "Already exist"}) //sending ae means already exist username
       }else{
         let query = db.query(sql, (err) => {
           if (err) {
-            res.json({ success: false, message: "Could not create User" });
+            res.json({ success: "swr", message: "Could not create User" });
           }else{
-            res.json({ success: true, message: "New User added" });
+            res.json({ success: "ok", message: "New User added" });//sending ok means new user registered
           }
         });
       }
@@ -77,10 +77,10 @@ app.post("/postLoginInfo", (req, res) => {
       console.log("below this line results")
       console.log(results);
       if (results[0].password === pass) {
-        //req.session.success = true;
-        req.session.user = {
+        req.session.success = true;
+         req.session.user = {
           username: fetchedUserName
-        };
+         };
         //  res.send(req.session.user);
         res.send({
           success: true
