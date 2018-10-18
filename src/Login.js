@@ -7,9 +7,8 @@ class Login extends Component {
 
     this.handleLogin = this.handleLogin.bind(this);
 
-    this.handleUsername = this.handleUsername.bind(this);
-
-    this.handlePassword = this.handlePassword.bind(this);
+    this.inputNameHandler = this.inputNameHandler.bind(this);
+    this.inputPassHandler = this.inputPassHandler.bind(this);
 
     this.state = {
       username: "",
@@ -18,12 +17,18 @@ class Login extends Component {
     };
   }
 
-  handleUsername(e) {
+  inputNameHandler(e){
     this.setState({ username: e.target.value });
-  }
+    if (e.keyCode === 13 ){
+      this.handleLogin();
+    }
 
-  handlePassword(e) {
+  }
+  inputPassHandler(e){
     this.setState({ password: e.target.value });
+    if (e.keyCode === 13 ){
+      this.handleLogin();
+    }
   }
 
    handleLogin() { //this method produces error on line 40. "sometimes"
@@ -62,11 +67,11 @@ class Login extends Component {
       <div className="loginContainer">
         <h4 className="propmtLogin"><span className= "dotGreen"> </span> Login to Chat now :</h4>
         <h4 className="promptText">Username:</h4>
-        <input type="text" name="username" onChange={this.handleUsername} className="input-box-area"/>
+        <input type="text" name="username" onKeyUp={this.inputNameHandler}  className="input-box-area"/>
 
         <h4 className="promptText">Password:</h4>
 
-        <input type="password" name="password" onChange={this.handlePassword} className="input-box-area"/>
+        <input type="text" name="password" onKeyUp={this.inputPassHandler} className="input-box-area"/>
 
         <button onClick={this.handleLogin} className = "loginButton">Login</button>
         <h4>{this.state.ifWrong}</h4>
