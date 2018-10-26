@@ -4,13 +4,25 @@ const express = require("express");
 const mysql = require("mysql");
 const app = express();
 const cors = require("cors");
-var socket = require('socket.io');
+var socket = require("socket.io");
 
 const session = require("express-session");
 
 // using middlewares
 
+var options = {
+  dotfiles: "ignore",
+  etag: false,
+  extensions: ["htm", "html", "js", "css"],
+  index: false,
+  maxAge: "1d",
+  redirect: false,
+  setHeaders: function(res, path, stat) {
+    res.set("x-timestamp", Date.now());
+  }
+};
 app.use(require("body-parser").json());
+app.use(express.static("build", options));
 
 app.use(express.json());
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
@@ -30,6 +42,12 @@ const db = mysql.createConnection({
   database: "chatdata"
 });
 
+app.get("/", (req, res) => {
+  res.set("Content-Type", "text/html");
+  res.sendFile("index.html", {
+    root: "./build/"
+  });
+});
 //Register
 app.post("/postRegisterInfo", (req, res) => {
   let post = {
@@ -37,25 +55,28 @@ app.post("/postRegisterInfo", (req, res) => {
     email: req.body.email,
     password: req.body.password
   };
-  let sql = `INSERT INTO userdata( username, email, password) VALUES ("${post.username}", "${post.email} ","${post.password}")`;
+  let sql = `INSERT INTO userdata( username, email, password) VALUES ("${
+    post.username
+  }", "${post.email} ","${post.password}")`;
   let sqlExist = `SELECT * FROM userdata WHERE username = "${post.username}"`;
 
   //already existed user or not
-  let checkExist = db.query(sqlExist, (err,result) =>{
-    if(err){ //any server-db error
+  let checkExist = db.query(sqlExist, (err, result) => {
+    if (err) {
+      //any server-db error
       console.log(err);
-      res.json({success: "swr"});//sending swr means something went wrong
-    }else{
-
-      if(result.length >0){ //there is something with same username found
-        console.log("Username already Exist!")
-        res.json({success:"ae", message: "Already exist"}) //sending ae means already exist username
-      }else{
-        let query = db.query(sql, (err) => {
+      res.json({ success: "swr" }); //sending swr means something went wrong
+    } else {
+      if (result.length > 0) {
+        //there is something with same username found
+        console.log("Username already Exist!");
+        res.json({ success: "ae", message: "Already exist" }); //sending ae means already exist username
+      } else {
+        let query = db.query(sql, err => {
           if (err) {
             res.json({ success: "swr", message: "Could not create User" });
-          }else{
-            res.json({ success: "ok", message: "New User added" });//sending ok means new user registered
+          } else {
+            res.json({ success: "ok", message: "New User added" }); //sending ok means new user registered
           }
         });
       }
@@ -70,29 +91,29 @@ app.post("/postLoginInfo", (req, res) => {
   let sql = `SELECT username,password,email FROM userdata WHERE username = "${uname}"`;
   let query = db.query(sql, (err, results) => {
     if (err) throw err;
-    console.log("below this line results")
+    console.log("below this line results");
     console.log(results);
-    if(results.length>0){
+    if (results.length > 0) {
       var fetchedUserName = results[0];
-      console.log("below this line results")
+      console.log("below this line results");
       console.log(results);
       if (results[0].password === pass) {
         req.session.success = true;
-         req.session.user = {
+        req.session.user = {
           username: fetchedUserName
-         };
+        };
         //  res.send(req.session.user);
         res.send({
           success: true
         });
         // res.redirect('/');
-      }else{
+      } else {
         res.send({
           success: false
-        })
+        });
       }
-    }else {
-      res.json({success: false});
+    } else {
+      res.json({ success: false });
     }
   });
 });
@@ -109,10 +130,10 @@ app.post("/sendmsg", (req, res) => {
     let query = db.query(sql, (err, result) => {
       if (err) {
         res.json({ success: false, message: "Could not create post" });
+      } else {
+        res.json({ success: true, message: "New post added" });
       }
-      else{  res.json({ success: true, message: "New post added" });}
       //console.log(result);
-
     });
   } else {
     res.send({
@@ -124,15 +145,14 @@ app.post("/sendmsg", (req, res) => {
 //test session
 
 app.get("/secret", (req, res, next) => {
-
   if (req.session.user) {
     //res.send("You are logged IN")
     res.send({
-      success:true,
+      success: true,
       name: req.session.user.username
     });
   } else {
-    res.send({success: false, name: "please login to continue"});
+    res.send({ success: false, name: "please login to continue" });
   }
 });
 
@@ -140,17 +160,15 @@ app.get("/secret", (req, res, next) => {
 app.get("/logout", (req, res) => {
   req.session.destroy(function(err) {
     if (err) throw err;
-    res.send(
-      {
-        success:true
-      }
-    );
+    res.send({
+      success: true
+    });
   });
 });
 
 //check Login Status
 app.get("/status", (req, res) => {
-    //console.log(req.session.user)
+  //console.log(req.session.user)
   if (req.session.user) {
     res.send({
       login: true
@@ -162,21 +180,19 @@ app.get("/status", (req, res) => {
   }
 });
 
-
 //getting recent top 50 chatmsg with timeout
-app.get("/recentchat", (req, res) =>{
-    let sql = `SELECT * FROM globalchat ORDER BY id DESC LIMIT 10`;
-    let query = db.query(sql, (err, results) =>{
-      if(err) throw err;
+app.get("/recentchat", (req, res) => {
+  let sql = `SELECT * FROM globalchat ORDER BY id DESC LIMIT 10`;
+  let query = db.query(sql, (err, results) => {
+    if (err) throw err;
 
-      //console.log(results);
+    //console.log(results);
 
-      res.send({
-        success:true,
-        data : results
-      });
-
-    })
+    res.send({
+      success: true,
+      data: results
+    });
+  });
 });
 
 app.get("/home", (req, res) => {
@@ -191,8 +207,8 @@ server = app.listen("5000", () => {
 //using socekts
 io = socket(server);
 
-io.on('connection', (socket) =>{
-  socket.on('SEND_MESSAGE', (data)=>{
-    io.emit('RECEIVE_MESSAGE', data)
-  })
-})
+io.on("connection", socket => {
+  socket.on("SEND_MESSAGE", data => {
+    io.emit("RECEIVE_MESSAGE", data);
+  });
+});
